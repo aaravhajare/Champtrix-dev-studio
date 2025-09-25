@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champtrix Dev Studios</title>
+    <style>
+        /* ===== GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #00ffff;
+            overflow-x: hidden;
+            position: relative;
+
+            background: linear-gradient(to right, black 50%, transparent 50%),
+                url("logo.png") no-repeat center/cover;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        nav .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 1);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 4rem;
+            letter-spacing: 6px;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        h1:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 30px rgba(0, 255, 255, 1);
+        }
+
+        p {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #00e6e6;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 80px 50px;
+            min-height: 100vh;
+        }
+
+        section h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        section p {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* ===== ABOUT ===== */
+        .about {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* ===== SERVICES ===== */
+        .services {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .service-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+        }
+
+        /* ===== PORTFOLIO ===== */
+        .portfolio {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 80px 50px;
+}
+
+.portfolio h2 {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.portfolio-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.video-container {
+    flex: 1 1 600px; /* Makes videos larger and responsive */
+    max-width: 800px;
+    position: relative;
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-container video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+}
+
+
+        /* ===== CONTACT ===== */
+        .contact {
+            background: rgba(0, 0, 0, 0.6);
+            text-align: center;
+        }
+
+        .contact form {
+            max-width: 500px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact input,
+        .contact textarea {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .contact button {
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .contact button:hover {
+            background: #00e6e6;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ccc;
+        }
+
+        /* Style the video nicely */
+video {
+  width: 80%;              /* responsive size */
+  max-width: 800px;
+  border-radius: 15px;      /* rounded corners */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* soft shadow */
+  display: block;
+  margin: 20px auto;       /* center on page */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+video:hover {
+  transform: scale(1.03);   /* subtle zoom */
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Optional: add a mockup-like frame */
+video::before {
+  content: "";
+  position: absolute;
+  border: 10px solid #000;
+  border-radius: 20px;
+}
+
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="nav-logo">Champtrix</div>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero" class="hero">
+        <h1>CHAMPTRIX</h1>
+        <p>Innovative Web & App Development Studio</p>
+        <button class="btn">✨ Get My Website</button>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>Champtrix Dev Studios is dedicated to delivering modern, high-quality websites and applications tailored to
+            your
+            business needs. Our expert team works tirelessly to create intuitive, visually stunning solutions that make
+            a
+            lasting impression.</p>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            <div class="card">
+                <h3>Web Development</h3>
+                <p>Responsive, scalable, and modern websites to give your business a powerful online presence.</p>
+            </div>
+            <div class="card">
+                <h3>App Development</h3>
+                <p>Custom mobile apps designed to delight your users and enhance engagement.</p>
+            </div>
+            <div class="card">
+                <h3>UI/UX Design</h3>
+                <p>Beautiful and functional interfaces that keep users coming back for more.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="portfolio">
+        <h2>Our Work</h2>
+        <div class="portfolio-grid">
+            <div class="video-container">
+                <video src="web-1.mp4" autoplay loop muted playsinline></video>
+            </div>
+            <div class="video-container">
+                <video src="web-2.mp4" autoplay loop muted playsinline></video>
+            </div>
+            <div class="video-container">
+                <video src="web-3.mp4" autoplay loop muted playsinline></video>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        &copy; 2025 Champtrix Dev Studios. All rights reserved.
+    </footer>
+</body>
+
+</html>

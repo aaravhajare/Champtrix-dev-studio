@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champtrix Login / Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, black 50%, transparent 50%), url("logo.png") no-repeat center/cover;
+            color: #00ffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        input::placeholder {
+            color: #ccc;
+        }
+
+        .btn {
+            background: #00ffff;
+            color: black;
+            font-weight: bold;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            width: 100%;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        .btn:hover {
+            background: #00e6e6;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 1);
+        }
+
+        .toggle-link {
+            margin-top: 15px;
+            display: block;
+            font-size: 0.9rem;
+            color: #00ffff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .toggle-link:hover {
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.9);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .google-btn {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+        }
+
+        .google-btn img {
+            height: 20px;
+            margin-right: 10px;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Form -->
+    <div class="container" id="loginForm">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email" id="loginEmail">
+        <input type="password" placeholder="Password" id="loginPassword">
+        <button class="btn" onclick="login()">Login</button>
+        <div class="google-btn" onclick="googleSignIn()">
+            <img src="google-logo-icon-gsuite-hd-701751694791470gzbayltphh-removebg-preview.png">   Sign in with Google
+        </div>
+        <span class="toggle-link" onclick="toggleForms()">Don't have an account? Sign Up</span>
+        <div class="error" id="loginError"></div>
+    </div>
+
+    <!-- Sign-Up Form -->
+    <div class="container hidden" id="signupForm">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Full Name" id="signupName">
+        <input type="email" placeholder="Email" id="signupEmail">
+        <input type="password" placeholder="Password" id="signupPassword">
+        <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+        <button class="btn" onclick="signup()">Sign Up</button>
+        <div class="google-btn" onclick="googleSignIn()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg">
+            Sign up with Google
+        </div>
+        <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
+        <div class="error" id="signupError"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+                apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
+                authDomain: "champtrixdevstudio.firebaseapp.com",
+                projectId: "champtrixdevstudio",
+                storageBucket: "champtrixdevstudio.firebasestorage.app",
+                messagingSenderId: "518695122341",
+                appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
+                measurementId: "G-ZERHWE289L"
+            };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function toggleForms() {
+            document.getElementById("loginForm").classList.toggle("hidden");
+            document.getElementById("signupForm").classList.toggle("hidden");
+            clearErrors();
+        }
+        function clearErrors() {
+            document.getElementById("loginError").textContent = "";
+            document.getElementById("signupError").textContent = "";
+        }
+
+        function signup() {
+            const name = document.getElementById("signupName").value;
+            const email = document.getElementById("signupEmail").value;
+            const password = document.getElementById("signupPassword").value;
+            const confirmPassword = document.getElementById("signupConfirmPassword").value;
+            const errorDisplay = document.getElementById("signupError");
+
+            clearErrors();
+            if (!name || !email || !password || !confirmPassword) {
+                errorDisplay.textContent = "All fields are required.";
+                return;
+            }
+            if (password !== confirmPassword) {
+                errorDisplay.textContent = "Passwords do not match.";
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    const user = userCredential.user;
+                    return user.updateProfile({ displayName: name });
+                })
+                .then(() => alert("Sign-Up successful! You can now login."))
+                .catch(error => errorDisplay.textContent = error.message);
+        }
+
+        function login() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            const errorDisplay = document.getElementById("loginError");
+
+            clearErrors();
+            if (!email || !password) {
+                errorDisplay.textContent = "Please fill in all fields.";
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    alert("Login successful! Welcome " + (userCredential.user.displayName || "User"));
+                    console.log(userCredential.user);
+                })
+                .catch(error => errorDisplay.textContent = error.message);
+        }
+
+        function googleSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(result => {
+                    const user = result.user;
+                    alert("Signed in as " + user.displayName);
+                    console.log(user);
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Error: " + error.message);
+                });
+        }
+    </script>
+</body>
+
+</html>

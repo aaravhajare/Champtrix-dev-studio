@@ -287,13 +287,34 @@ video::before {
   border-radius: 20px;
 }
 
+nav .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* spacing between logo and text */
+}
+
+nav .nav-left img {
+  width: 50px;
+  height: 50px;
+}
+
+nav .nav-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
     </style>
 </head>
 
 <body>
     <!-- NAVBAR -->
     <nav>
-        <div class="nav-logo">Champtrix</div>
+        <div class="nav-left">
+            <img src="nav-logo.png" alt="Champtrix Logo">
+            <span class="nav-logo">Champtrix</span>
+        </div>
         <ul>
             <li><a href="#hero">Home</a></li>
             <li><a href="#about">About</a></li>

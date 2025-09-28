@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champtrix Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, black 50%, transparent 50%),
+        url("logo.png") no-repeat center/cover;
+      color: #00ffff;
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 50px;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    nav .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    nav .nav-left img {
+      width: 50px;
+      height: 50px;
+    }
+
+    nav .nav-logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00ffff;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      color: white;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 1);
+    }
+
+    .dashboard {
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    .dashboard h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+    }
+
+    .dashboard p {
+      font-size: 1.3rem;
+      color: #ccc;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ===== PRICING CARDS ===== */
+    .pricing-section {
+      padding: 50px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      margin-top: 70px;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: 2px solid white;
+      border-radius: 25px;
+    }
+
+    .card-title {
+      color: #00ffff;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+      transform: translateY(-10px);
+      transition: 0.3s ease;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00ffff;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #bbb;
+      border-top: 2px solid #0f3460;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-left">
+      <img src="nav-logo.png" alt="Champtrix Logo">
+      <span class="nav-logo">Champtrix</span>
+      <span class="nav-logo" id="username" style="margin-left: 40px;"></span>
+    </div>
+    <ul>
+      <li><a onclick="loadSection('home')">Dashboard</a></li>
+      <li><a onclick="loadSection('project')">Request a Project</a></li>
+      <li><a onclick="loadSection('packages')">Our Packages</a></li>
+      <li><a onclick="loadSection('status')">Project Status</a></li>
+      <li><a onclick="loadSection('contact')">Get In Touch</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="container" id="mainContent"></div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
+      authDomain: "champtrixdevstudio.firebaseapp.com",
+      projectId: "champtrixdevstudio",
+      storageBucket: "champtrixdevstudio.appspot.com",
+      messagingSenderId: "518695122341",
+      appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
+      measurementId: "G-ZERHWE289L"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Load sections
+    // Load sections
+        function loadSection(section) {
+            const container = document.getElementById("mainContent");
+
+            if (section === "packages") {
+                container.innerHTML = `
+      <section class="pricing-section">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title">Basic Static</h5>
+                <p class="card-text">Plain HTML + CSS per page. Clean responsive design.</p>
+                <p class="price">₹500/page</p>
+                <small>Example: Home, About, Contact pages</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title">Interactive Lite</h5>
+                <p class="card-text">HTML + CSS + JS with animations, sliders, hover effects.</p>
+                <p class="price">₹650/page</p>
+                <small>Example: Service page with slider</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title">Dynamic Connect</h5>
+                <p class="card-text">HTML + CSS + JS + Firebase backend for forms, login, database.</p>
+                <p class="price">₹750/page</p>
+                <small>Example: Dashboard, Contact forms</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title">Fullstack Pro</h5>
+                <p class="card-text">HTML + CSS + JS + Firebase + Python backend for advanced web apps.</p>
+                <p class="price">₹850/page</p>
+                <small>Example: Web apps, management systems</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <div class="card-body">
+                <h5 class="card-title">Python Logic</h5>
+                <p class="card-text">Python backend functionality per module/function.</p>
+                <p class="price">₹200/functionality</p>
+                <small>Example: API, backend logic</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+            }
+
+            else if (section === "project") {
+                container.innerHTML = `
+      <div class="request-project p-4" style="margin-top:70px;"> 
+        <h2 style="color:#00ffff; text-align:center;">Request a Project</h2>
+        <form id="projectForm">
+          <label>Project Type</label>
+          <select id="projectType" class="form-select" onchange="showFields()">
+            <option value="">Select</option>
+            <option value="website">Website</option>
+            <option value="software">Software</option>
+            <option value="frontend">Frontend</option>
+            <option value="backend">Backend</option>
+          </select>
+
+          <div id="websiteFields" class="hidden mt-3">
+            <label>Number of Pages</label>
+            <input type="number" id="websitePages" class="form-control">
+            <label class="mt-2">Languages</label>
+            <div>
+              <input type="checkbox" value="HTML"> HTML 
+              <input type="checkbox" value="CSS"> CSS 
+              <input type="checkbox" value="JS"> JS 
+              <input type="checkbox" value="Node.js"> Node.js 
+              <input type="checkbox" value="Bootstrap"> Bootstrap
+            </div>
+            <label class="mt-2">Topic</label>
+            <input type="text" id="websiteTopic" class="form-control">
+          </div>
+
+          <div id="softwareFields" class="hidden mt-3">
+            <label>Platform</label>
+            <input type="text" id="softwarePlatform" class="form-control">
+            <label class="mt-2">Features</label>
+            <textarea id="softwareFeatures" class="form-control"></textarea>
+          </div>
+
+          <div id="frontendFields" class="hidden mt-3">
+            <label>Framework</label>
+            <input type="text" id="frontendFramework" class="form-control">
+            <label class="mt-2">Design Requirements</label>
+            <textarea id="frontendDesign" class="form-control"></textarea>
+          </div>
+
+          <div id="backendFields" class="hidden mt-3">
+            <label>Backend Language</label>
+            <input type="text" id="backendLanguage" class="form-control">
+            <label class="mt-2">Functionality</label>
+            <textarea id="backendFunctionality" class="form-control"></textarea>
+          </div>
+
+          <button type="button" class="btn btn-info mt-3" onclick="submitProject()">Submit Request</button>
+        </form>
+      </div>`;
+            }
+
+            else if (section === "status") {
+                container.innerHTML = `
+      <h2 style="color:#00ffff; text-align:center; margin-top:70px;">Project Status</h2>
+      <div class="table-responsive mt-4">
+        <table class="table table-dark table-bordered table-striped" id="statusTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Type</th>
+              <th>Details</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="statusBody">
+            <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+                loadProjectStatus();
+            }
+
+            else if (section === "contact") {
+                container.innerHTML = `
+      <h2 style="color:#00ffff; text-align:center; margin-top:70px;">Get In Touch</h2>
+      <p>Email: contact@champtrix.dev</p>`;
+            }
+
+            else if (section === "home") {
+                container.innerHTML = `
+      <div class="dashboard">
+        <h1>Welcome to Champtrix Dashboard</h1>
+        <p id="projectStats" style="font-size:1.3rem; margin-top:20px; color:#00ffff;">
+          Loading your project stats...
+        </p>
+
+        <div class="table-responsive mt-4">
+          <table class="table table-dark table-bordered table-striped" id="projectsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Details</th>
+                <th>Created At</th>
+                <th>Estimate (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="projectsBody">
+              <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+                loadUserStats();
+            }
+        }
+
+
+    function showFields() {
+      document.querySelectorAll("#websiteFields, #softwareFields, #frontendFields, #backendFields")
+        .forEach(el => el.classList.add("hidden"));
+      let type = document.getElementById("projectType").value;
+      if (type) document.getElementById(type + "Fields").classList.remove("hidden");
+    }
+
+    function submitProject() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert("You must be logged in to submit a project.");
+        return;
+      }
+
+      let type = document.getElementById("projectType").value;
+      let data = {
+        uid: user.uid,
+        type,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        status: "not_started"
+      };
+
+      if (type === "website") {
+        data.pages = document.getElementById("websitePages").value;
+        data.languages = Array.from(document.querySelectorAll("#websiteFields input[type=checkbox]:checked"))
+          .map(cb => cb.value);
+        data.topic = document.getElementById("websiteTopic").value;
+      }
+      if (type === "software") {
+        data.platform = document.getElementById("softwarePlatform").value;
+        data.features = document.getElementById("softwareFeatures").value;
+      }
+      if (type === "frontend") {
+        data.framework = document.getElementById("frontendFramework").value;
+        data.design = document.getElementById("frontendDesign").value;
+      }
+      if (type === "backend") {
+        data.language = document.getElementById("backendLanguage").value;
+        data.functionality = document.getElementById("backendFunctionality").value;
+      }
+
+      db.collection("orders").add(data).then(() => {
+        console.log("Data saved:", data);
+        alert("Request submitted successfully!");
+        loadSection("home"); // refresh stats
+      }).catch(err => console.error("Error storing data:", err));
+
+      fetch("https://script.google.com/macros/s/AKfycbyroVGFcd2DtvMgpXXD-4E8CcpzJ87WLfcn06juFYbwFEybe_KwiX0BBR-HQ7-mE_kofQ/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.text())
+        .then(msg => console.log("Sheets Response:", msg))
+        .catch(err => console.error(err));
+    }
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById("username").textContent = "Welcome , " + user.displayName || "User";
+        loadSection("home"); // auto-load dashboard
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function loadUserStats() {
+            const user = firebase.auth().currentUser;
+            if (!user) return;
+
+            db.collection("orders")
+                .where("uid", "==", user.uid)
+                .get()  // removed .orderBy("createdAt", "desc")
+                .then(snapshot => {
+                    let totalProjects = snapshot.size;
+                    let totalEstimate = 0;
+                    let rows = "";
+
+                    let i = 1;
+                    snapshot.forEach(doc => {
+                        let order = doc.data();
+                        let estimate = 0;
+                        let details = "";
+
+                        if (order.type === "website") {
+                            estimate = (parseInt(order.pages) || 0) * 500;
+                            details = `Pages: ${order.pages || 0}, Langs: ${(order.languages || []).join(", ")}, Topic: ${order.topic || "-"}`;
+                        }
+                        if (order.type === "software") {
+                            estimate = 750;
+                            details = `Platform: ${order.platform || "-"}, Features: ${order.features || "-"}`;
+                        }
+                        if (order.type === "frontend") {
+                            estimate = 650;
+                            details = `Framework: ${order.framework || "-"}, Design: ${order.design || "-"}`;
+                        }
+                        if (order.type === "backend") {
+                            estimate = 200;
+                            details = `Lang: ${order.language || "-"}, Func: ${order.functionality || "-"}`;
+                        }
+
+                        totalEstimate += estimate;
+
+                        rows += `
+                <tr>
+                    <td>${i++}</td>
+                    <td>${order.type}</td>
+                    <td>${details}</td>
+                    <td>${order.createdAt?.toDate?.().toLocaleString?.() || "-"}</td>
+                    <td>₹${estimate}</td>
+                </tr>`;
+                    });
+
+                    document.getElementById("projectStats").innerHTML =
+                        `📌 You have <b>${totalProjects}</b> project(s) issued.<br>
+                 💰 Estimated Total: <b>₹${totalEstimate}</b>`;
+
+                    document.getElementById("projectsBody").innerHTML =
+                        rows || `<tr><td colspan="5" style="text-align:center;">No projects found.</td></tr>`;
+                })
+                .catch(err => {
+                    console.error("Error fetching stats:", err);
+                    document.getElementById("projectStats").textContent =
+                        "Error loading project stats.";
+                    document.getElementById("projectsBody").innerHTML =
+                        `<tr><td colspan="5" style="text-align:center;">Error loading projects.</td></tr>`;
+                });
+        }
+
+        function loadProjectStatus() {
+                const user = firebase.auth().currentUser;
+                if (!user) return;
+
+                db.collection("orders")
+                    .where("uid", "==", user.uid)
+                    .get()
+                    .then(snapshot => {
+                        let rows = "";
+                        let i = 1;
+
+                        snapshot.forEach(doc => {
+                            let order = doc.data();
+                            let estimate = 0;
+                            let details = "";
+                            let statusIcon = "";
+
+                            // Pricing & details
+                            if (order.type === "website") {
+                                estimate = (order.pages || 0) * 500;
+                                details = `Pages: ${order.pages || 0}, Langs: ${(order.languages || []).join(", ")}, Topic: ${order.topic || "-"}`;
+                            }
+                            if (order.type === "software") {
+                                estimate = 750;
+                                details = `Platform: ${order.platform || "-"}, Features: ${order.features || "-"}`;
+                            }
+                            if (order.type === "frontend") {
+                                estimate = 650;
+                                details = `Framework: ${order.framework || "-"}, Design: ${order.design || "-"}`;
+                            }
+                            if (order.type === "backend") {
+                                estimate = 200;
+                                details = `Lang: ${order.language || "-"}, Func: ${order.functionality || "-"}`;
+                            }
+
+                            // Status with icons
+                            switch (order.status) {
+                                case "not_started":
+                                    statusIcon = "❌ Not Started";
+                                    break;
+                                case "in_progress":
+                                    statusIcon = "⏳ In Progress";
+                                    break;
+                                case "almost_done":
+                                    statusIcon = "⚡ Almost Done";
+                                    break;
+                                case "completed":
+                                    statusIcon = "✅ Completed";
+                                    break;
+                                default:
+                                    statusIcon = "❔ Unknown";
+                            }
+
+                            rows += `
+        <tr>
+            <td>${i++}</td>
+            <td>${order.type}</td>
+            <td>${details}</td>
+            <td>${order.createdAt?.toDate().toLocaleString() || "-"}</td>
+            <td>₹${estimate}</td>
+            <td>${statusIcon}</td>
+        </tr>`;
+                        });
+
+                        document.getElementById("statusBody").innerHTML =
+                            rows || `<tr><td colspan="6" style="text-align:center;">No projects found.</td></tr>`;
+                    })
+                    .catch(err => {
+                        console.error("Error loading project status:", err);
+                        document.getElementById("statusBody").innerHTML =
+                            `<tr><td colspan="6" style="text-align:center;">Error loading status.</td></tr>`;
+                    });
+            }
+
+
+
+  </script>
+</body>
+</html>

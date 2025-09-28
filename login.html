@@ -38,10 +38,11 @@
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
         }
 
-        input {
+        input,
+        select {
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 8px 0;
             border-radius: 10px;
             border: none;
             background: rgba(255, 255, 255, 0.1);
@@ -115,21 +116,58 @@
         .google-btn img {
             height: 20px;
             margin-right: 10px;
+        }
 
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        nav .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        nav .nav-left img {
+            width: 50px;
+            height: 50px;
+        }
+
+        nav .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
         }
     </style>
 </head>
 
 <body>
+    <!-- Nav -->
+    <nav>
+        <div class="nav-left">
+            <img src="nav-logo.png" alt="Champtrix Logo">
+            <span class="nav-logo">Champtrix</span>
+        </div>
+    </nav>
 
     <!-- Login Form -->
     <div class="container" id="loginForm">
         <h2>Login</h2>
         <input type="email" placeholder="Email" id="loginEmail">
         <input type="password" placeholder="Password" id="loginPassword">
+        <input type="checkbox" id="keepLoggedIn"> Keep me logged in
         <button class="btn" onclick="login()">Login</button>
         <div class="google-btn" onclick="googleSignIn()">
-            <img src="google-logo-icon-gsuite-hd-701751694791470gzbayltphh-removebg-preview.png">   Sign in with Google
+            <img src="google-logo-icon-gsuite-hd-701751694791470gzbayltphh-removebg-preview.png"> Sign in with Google
         </div>
         <span class="toggle-link" onclick="toggleForms()">Don't have an account? Sign Up</span>
         <div class="error" id="loginError"></div>
@@ -142,10 +180,17 @@
         <input type="email" placeholder="Email" id="signupEmail">
         <input type="password" placeholder="Password" id="signupPassword">
         <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+        <input type="text" placeholder="Phone Number" id="signupPhone">
+        <input type="number" placeholder="Age" id="signupAge">
+        <select id="signupGender">
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
         <button class="btn" onclick="signup()">Sign Up</button>
         <div class="google-btn" onclick="googleSignIn()">
-            <img src="google-logo-icon-gsuite-hd-701751694791470gzbayltphh-removebg-preview.png">
-            Sign up with Google
+            <img src="google-logo-icon-gsuite-hd-701751694791470gzbayltphh-removebg-preview.png"> Sign up with Google
         </div>
         <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
         <div class="error" id="signupError"></div>
@@ -154,41 +199,47 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-            const firebaseConfig = {
-                apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
-                authDomain: "champtrixdevstudio.firebaseapp.com",
-                projectId: "champtrixdevstudio",
-                storageBucket: "champtrixdevstudio.firebasestorage.app",
-                messagingSenderId: "518695122341",
-                appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
-                measurementId: "G-ZERHWE289L"
-            };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
+            authDomain: "champtrixdevstudio.firebaseapp.com",
+            projectId: "champtrixdevstudio",
+            storageBucket: "champtrixdevstudio.firebasestorage.app",
+            messagingSenderId: "518695122341",
+            appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
+            measurementId: "G-ZERHWE289L"
+        };
+
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
 
         function toggleForms() {
             document.getElementById("loginForm").classList.toggle("hidden");
             document.getElementById("signupForm").classList.toggle("hidden");
             clearErrors();
         }
+
         function clearErrors() {
             document.getElementById("loginError").textContent = "";
             document.getElementById("signupError").textContent = "";
         }
 
         function signup() {
-            const name = document.getElementById("signupName").value;
-            const email = document.getElementById("signupEmail").value;
+            const name = document.getElementById("signupName").value.trim();
+            const email = document.getElementById("signupEmail").value.trim();
             const password = document.getElementById("signupPassword").value;
             const confirmPassword = document.getElementById("signupConfirmPassword").value;
+            const phone = document.getElementById("signupPhone").value.trim();
+            const age = document.getElementById("signupAge").value.trim();
+            const gender = document.getElementById("signupGender").value;
             const errorDisplay = document.getElementById("signupError");
 
             clearErrors();
-            if (!name || !email || !password || !confirmPassword) {
+
+            if (!name || !email || !password || !confirmPassword || !phone || !age || !gender) {
                 errorDisplay.textContent = "All fields are required.";
                 return;
             }
@@ -200,30 +251,58 @@
             auth.createUserWithEmailAndPassword(email, password)
                 .then(userCredential => {
                     const user = userCredential.user;
-                    return user.updateProfile({ displayName: name });
+                    return user.updateProfile({ displayName: name })
+                        .then(() => {
+                            return db.collection("users").doc(user.uid).set({
+                                fullName: name,
+                                email: email,
+                                phone: phone,
+                                age: age,
+                                gender: gender,
+                                uid: user.uid,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        });
                 })
-                .then(() => alert("Sign-Up successful! You can now login."))
-                .catch(error => errorDisplay.textContent = error.message);
+                .then(() => {
+                    alert("Sign-Up successful! You can now login.");
+                    window.location.href = "dashboard.html";
+                })
+                .catch(error => {
+                    document.getElementById("signupError").textContent = error.message;
+                });
         }
 
         function login() {
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
-            const errorDisplay = document.getElementById("loginError");
+                const email = document.getElementById("loginEmail").value;
+                const password = document.getElementById("loginPassword").value;
+                const keepLoggedIn = document.getElementById("keepLoggedIn").checked;
+                const errorDisplay = document.getElementById("loginError");
 
-            clearErrors();
-            if (!email || !password) {
-                errorDisplay.textContent = "Please fill in all fields.";
-                return;
+                clearErrors();
+
+                if (!email || !password) {
+                    errorDisplay.textContent = "Please fill in all fields.";
+                    return;
+                }
+
+                let persistence = keepLoggedIn
+                    ? firebase.auth.Auth.Persistence.LOCAL   // Keeps user logged in
+                    : firebase.auth.Auth.Persistence.SESSION; // Clears on browser close
+
+                auth.setPersistence(persistence)
+                    .then(() => {
+                        return auth.signInWithEmailAndPassword(email, password);
+                    })
+                    .then(userCredential => {
+                        alert("Login successful! Welcome " + (userCredential.user.displayName || "User"));
+                        window.location.href = "dashboard.html";
+                    })
+                    .catch(error => {
+                        errorDisplay.textContent = error.message;
+                    });
             }
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then(userCredential => {
-                    alert("Login successful! Welcome " + (userCredential.user.displayName || "User"));
-                    console.log(userCredential.user);
-                })
-                .catch(error => errorDisplay.textContent = error.message);
-        }
 
         function googleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
@@ -231,7 +310,6 @@
                 .then(result => {
                     const user = result.user;
                     alert("Signed in as " + user.displayName);
-                    console.log(user);
                 })
                 .catch(error => {
                     console.error(error);

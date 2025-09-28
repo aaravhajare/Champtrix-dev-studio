@@ -310,6 +310,7 @@
                 .then(result => {
                     const user = result.user;
                     alert("Signed in as " + user.displayName);
+                    window.location.href = "dashboard.html"
                 })
                 .catch(error => {
                     console.error(error);

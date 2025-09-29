@@ -380,6 +380,41 @@ nav .nav-logo {
         &copy; 2025 Champtrix Dev Studios. All rights reserved.
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // ✅ Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
+            authDomain: "champtrixdevstudio.firebaseapp.com",
+            projectId: "champtrixdevstudio",
+            storageBucket: "champtrixdevstudio.firebasestorage.app",
+            messagingSenderId: "518695122341",
+            appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
+            measurementId: "G-ZERHWE289L"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Auto redirect after 5s
+        setTimeout(() => {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    window.location.href = "dashboard.html"; // ✅ logged in
+                } else {
+                    window.location.href = "login.html"; // ✅ not logged in
+                }
+            });
+        }, 2000); // 5 sec wait
+
+        // If user clicks the button manually
+        function login() {
+            window.location.href = "login.html";
+        }
+    </script>
+
     <script>
         
         function login() {

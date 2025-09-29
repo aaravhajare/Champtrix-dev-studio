@@ -36,10 +36,14 @@
       align-items: center;
       justify-content: space-between;
       padding: 15px 50px;
-      background: rgba(0, 0, 0, 0.7);
+  
       z-index: 1000;
+      margin-bottom: 200px;
+      background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+      backdrop-filter: blur(5px); /* Optional: nice blur effect behind navbar */
     }
 
+    
     nav .nav-left {
       display: flex;
       align-items: center;
@@ -58,7 +62,7 @@
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
     }
 
-    nav ul {
+    nav ul  {
       list-style: none;
       display: flex;
       gap: 25px;
@@ -95,10 +99,30 @@
     }
 
     /* ===== PRICING CARDS ===== */
+
     .pricing-section {
       padding: 50px 20px;
       background: rgba(0, 0, 0, 0.6);
       margin-top: 70px;
+    }
+
+    .website-section {
+      padding: 50px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      margin-top: 70px;
+      border: #00ffff 2px solid;
+      padding: 40px;
+      border-radius: 15px;
+    }
+
+    .software-section {
+      padding: 50px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      margin-top: 70px;
+      border: #00ffff 2px solid;
+      padding: 40px;
+      border-radius: 15px;
+      margin-top: 30px;
     }
 
     .card {
@@ -135,25 +159,50 @@
       width: 100%;
       bottom: 0;
     }
+
+    .price-tag{
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+      align-self: center;
+      justify-self: center;
+    }
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
   <!-- NAVBAR -->
-  <nav>
-    <div class="nav-left">
-      <img src="nav-logo.png" alt="Champtrix Logo" onclick="loadSection('home')">
-      <span class="nav-logo">Champtrix</span>
-      <span class="nav-logo" id="username" style="margin-left: 40px;"></span>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <div class="nav-left">
+          <img src="nav-logo.png" alt="Champtrix Logo">
+          <span class="nav-logo">Champtrix</span>
+          <span class="nav-logo" id="username"></span>
+  
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li><a onclick="loadSection('home')">Dashboard</a></li>
+          <li><a onclick="loadSection('project')">Request a Project</a></li>
+          <li><a onclick="loadSection('packages')">Our Packages</a></li>
+          <li><a onclick="loadSection('status')">Project Status</a></li>
+          <li><a onclick="loadSection('contact')">Get In Touch</a></li>
+          <li><a onclick="logout()">Logout</a></li>
+        </ul>
+      </div>
     </div>
-    <ul>
-      <li><a onclick="loadSection('home')">Dashboard</a></li>
-      <li><a onclick="loadSection('project')">Request a Project</a></li>
-      <li><a onclick="loadSection('packages')">Our Packages</a></li>
-      <li><a onclick="loadSection('status')">Project Status</a></li>
-      <li><a onclick="loadSection('contact')">Get In Touch</a></li>
-    </ul>
   </nav>
+
+
 
   <!-- MAIN CONTENT -->
   <div class="container" id="mainContent"></div>
@@ -184,7 +233,10 @@
 
             if (section === "packages") {
                 container.innerHTML = `
-      <section class="pricing-section">
+        <section class="pricing-section" style = "margin-top : 70px ;">
+
+        <h1 class="price-tag">Websites</h1>
+        <section class="website-section">
         <div class="row g-4">
           <div class="col-md-4">
             <div class="card p-3">
@@ -324,29 +376,49 @@
 
             else if (section === "home") {
                 container.innerHTML = `
-      <div class="dashboard">
-        <h1>Welcome to Champtrix Dashboard</h1>
-        <p id="projectStats" style="font-size:1.3rem; margin-top:20px; color:#00ffff;">
-          Loading your project stats...
-        </p>
+      <div class="dashboard" style="padding:20px; margin-top:auto; margin-top : 70px ; ">
 
-        <div class="table-responsive mt-4">
-          <table class="table table-dark table-bordered table-striped" id="projectsTable">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Type</th>
-                <th>Details</th>
-                <th>Created At</th>
-                <th>Estimate (₹)</th>
-              </tr>
-            </thead>
-            <tbody id="projectsBody">
-              <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>`;
+  <!-- Title -->
+  <h1 style="color:#00ffff; text-align:center; margin-bottom:30px; font-size:2.5rem; text-shadow:0 0 15px rgba(0,255,255,0.8);">
+    Champtrix Dashboard
+  </h1>
+
+  <!-- 🔹 User Stats Box -->
+  <div style="background:rgba(0,255,255,0.1); border:2px solid #00ffff; border-radius:12px;
+              padding:20px; margin:20px auto; text-align:center; max-width:600px;
+              box-shadow:0 0 25px rgba(0,255,255,0.4);">
+    <p id="projectStats" style="font-size:1.6rem; color:#00ffff; margin:0; font-weight:600; letter-spacing:0.5px;">
+      Loading your project stats...
+    </p>
+  </div>
+
+  <!-- 🔹 Projects Table -->
+  <div class="table-responsive mt-4" style="margin-top:30px;">
+    <table class="table table-dark table-bordered table-striped" id="projectsTable"
+           style="width:100%; border-collapse:collapse; text-align:center; font-size:1.1rem;">
+
+      <thead style="background:#0d0d0d; color:#00ffff; font-size:1.2rem; text-transform:uppercase;">
+        <tr>
+          <th style="padding:14px;">#</th>
+          <th style="padding:14px;">Type</th>
+          <th style="padding:14px;">Details</th>
+          <th style="padding:14px;">Created At</th>
+          <th style="padding:14px;">Estimate (₹)</th>
+        </tr>
+      </thead>
+
+      <tbody id="projectsBody">
+        <tr>
+          <td colspan="5" style="text-align:center; padding:14px; color:#ccc;">
+            Loading...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+`;
                 loadUserStats();
             }
         }
@@ -360,54 +432,76 @@
     }
 
     function submitProject() {
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        alert("You must be logged in to submit a project.");
-        return;
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert("You must be logged in to submit a project.");
+          return;
+        }
+
+        let type = document.getElementById("projectType").value;
+        let data = {
+          uid: user.uid,
+          type,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "not_started"
+        };
+
+        // ----- Project specific fields -----
+        if (type === "website") {
+          data.pages = document.getElementById("websitePages").value;
+          data.languages = Array.from(document.querySelectorAll("#websiteFields input[type=checkbox]:checked"))
+            .map(cb => cb.value);
+          data.topic = document.getElementById("websiteTopic").value;
+        }
+        if (type === "software") {
+          data.platform = document.getElementById("softwarePlatform").value;
+          data.features = document.getElementById("softwareFeatures").value;
+        }
+        if (type === "frontend") {
+          data.framework = document.getElementById("frontendFramework").value;
+          data.design = document.getElementById("frontendDesign").value;
+        }
+        if (type === "backend") {
+          data.language = document.getElementById("backendLanguage").value;
+          data.functionality = document.getElementById("backendFunctionality").value;
+        }
+
+        // 🔹 Get user details from "users" collection before saving order
+        db.collection("users").doc(user.uid).get().then(doc => {
+          if (doc.exists) {
+            const userData = doc.data();
+            data.userName = userData.name || "Unknown";
+            data.userPhone = userData.phone || "Not Provided";
+            data.userEmail = userData.email || user.email || "";
+          } else {
+            // fallback if user doc not found
+            data.userName = user.displayName || "Unknown";
+            data.userPhone = "Not Provided";
+            data.userEmail = user.email || "";
+          }
+
+          // Save project order with user details included
+          db.collection("orders").add(data).then(() => {
+            console.log("Order saved with user details:", data);
+            alert("Request submitted successfully!");
+            loadSection("home");
+          }).catch(err => console.error("Error storing order:", err));
+
+          // Still push to Google Sheets if needed
+          fetch("https://script.google.com/macros/s/AKfycbyroVGFcd2DtvMgpXXD-4E8CcpzJ87WLfcn06juFYbwFEybe_KwiX0BBR-HQ7-mE_kofQ/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          })
+            .then(res => res.text())
+            .then(msg => console.log("Sheets Response:", msg))
+            .catch(err => console.error(err));
+
+        }).catch(err => {
+          console.error("Error fetching user info:", err);
+        });
       }
 
-      let type = document.getElementById("projectType").value;
-      let data = {
-        uid: user.uid,
-        type,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        status: "not_started"
-      };
-
-      if (type === "website") {
-        data.pages = document.getElementById("websitePages").value;
-        data.languages = Array.from(document.querySelectorAll("#websiteFields input[type=checkbox]:checked"))
-          .map(cb => cb.value);
-        data.topic = document.getElementById("websiteTopic").value;
-      }
-      if (type === "software") {
-        data.platform = document.getElementById("softwarePlatform").value;
-        data.features = document.getElementById("softwareFeatures").value;
-      }
-      if (type === "frontend") {
-        data.framework = document.getElementById("frontendFramework").value;
-        data.design = document.getElementById("frontendDesign").value;
-      }
-      if (type === "backend") {
-        data.language = document.getElementById("backendLanguage").value;
-        data.functionality = document.getElementById("backendFunctionality").value;
-      }
-
-      db.collection("orders").add(data).then(() => {
-        console.log("Data saved:", data);
-        alert("Request submitted successfully!");
-        loadSection("home"); // refresh stats
-      }).catch(err => console.error("Error storing data:", err));
-
-      fetch("https://script.google.com/macros/s/AKfycbyroVGFcd2DtvMgpXXD-4E8CcpzJ87WLfcn06juFYbwFEybe_KwiX0BBR-HQ7-mE_kofQ/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-        .then(res => res.text())
-        .then(msg => console.log("Sheets Response:", msg))
-        .catch(err => console.error(err));
-    }
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -419,67 +513,83 @@
     });
 
     function loadUserStats() {
-            const user = firebase.auth().currentUser;
-            if (!user) return;
+        const user = firebase.auth().currentUser;
+        if (!user) return;
 
-            db.collection("orders")
-                .where("uid", "==", user.uid)
-                .get()  // removed .orderBy("createdAt", "desc")
-                .then(snapshot => {
-                    let totalProjects = snapshot.size;
-                    let totalEstimate = 0;
-                    let rows = "";
+        db.collection("orders")
+          .where("uid", "==", user.uid)
+          .get()
+          .then(snapshot => {
+            let totalProjects = snapshot.size;
+            let totalEstimate = 0;
+            let rows = "";
+            let i = 1;
 
-                    let i = 1;
-                    snapshot.forEach(doc => {
-                        let order = doc.data();
-                        let estimate = 0;
-                        let details = "";
+            snapshot.forEach(doc => {
+              let order = doc.data();
+              let estimate = 0;
+              let details = "";
 
-                        if (order.type === "website") {
-                            estimate = (parseInt(order.pages) || 0) * 500;
-                            details = `Pages: ${order.pages || 0}, Langs: ${(order.languages || []).join(", ")}, Topic: ${order.topic || "-"}`;
-                        }
-                        if (order.type === "software") {
-                            estimate = 750;
-                            details = `Platform: ${order.platform || "-"}, Features: ${order.features || "-"}`;
-                        }
-                        if (order.type === "frontend") {
-                            estimate = 650;
-                            details = `Framework: ${order.framework || "-"}, Design: ${order.design || "-"}`;
-                        }
-                        if (order.type === "backend") {
-                            estimate = 200;
-                            details = `Lang: ${order.language || "-"}, Func: ${order.functionality || "-"}`;
-                        }
+              // Calculate estimates based on languages/features
+              if (order.type === "website") {
+                let langs = order.languages || [];
 
-                        totalEstimate += estimate;
+                if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS") && langs.includes("Node.js") && langs.includes("Bootstrap")) {
+                  estimate = (parseInt(order.pages) || 0) * 850;
+                } else if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS") && (langs.includes("Node.js") || langs.includes("Firebase"))) {
+                  estimate = (parseInt(order.pages) || 0) * 750;
+                } else if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS")) {
+                  estimate = (parseInt(order.pages) || 0) * 650;
+                } else if (langs.includes("HTML") && langs.includes("CSS")) {
+                  estimate = (parseInt(order.pages) || 0) * 500;
+                }
 
-                        rows += `
-                <tr>
-                    <td>${i++}</td>
-                    <td>${order.type}</td>
-                    <td>${details}</td>
-                    <td>${order.createdAt?.toDate?.().toLocaleString?.() || "-"}</td>
-                    <td>₹${estimate}</td>
-                </tr>`;
-                    });
+                details = `Pages: ${order.pages || 0}, Langs: ${langs.join(", ")}, Topic: ${order.topic || "-"}`;
+              }
 
-                    document.getElementById("projectStats").innerHTML =
-                        `📌 You have <b>${totalProjects}</b> project(s) issued.<br>
-                 💰 Estimated Total: <b>₹${totalEstimate}</b>`;
+              if (order.type === "software") {
+                estimate = 750;
+                details = `Platform: ${order.platform || "-"}, Features: ${order.features || "-"}`;
+              }
 
-                    document.getElementById("projectsBody").innerHTML =
-                        rows || `<tr><td colspan="5" style="text-align:center;">No projects found.</td></tr>`;
-                })
-                .catch(err => {
-                    console.error("Error fetching stats:", err);
-                    document.getElementById("projectStats").textContent =
-                        "Error loading project stats.";
-                    document.getElementById("projectsBody").innerHTML =
-                        `<tr><td colspan="5" style="text-align:center;">Error loading projects.</td></tr>`;
-                });
-        }
+              if (order.type === "frontend") {
+                estimate = 650;
+                details = `Framework: ${order.framework || "-"}, Design: ${order.design || "-"}`;
+              }
+
+              if (order.type === "backend") {
+                estimate = 200;
+                details = `Lang: ${order.language || "-"}, Func: ${order.functionality || "-"}`;
+              }
+
+              totalEstimate += estimate;
+
+              rows += `
+            <tr>
+                <td>${i++}</td>
+                <td>${order.type}</td>
+                <td>${details}</td>
+                <td>${order.createdAt?.toDate?.().toLocaleString?.() || "-"}</td>
+                <td>₹${estimate}</td>
+            </tr>`;
+            });
+
+            document.getElementById("projectStats").innerHTML =
+              `📌 You have <b>${totalProjects}</b> project(s) issued.<br>
+             💰 Estimated Total: <b>₹${totalEstimate}</b>`;
+
+            document.getElementById("projectsBody").innerHTML =
+              rows || `<tr><td colspan="5" style="text-align:center;">No projects found.</td></tr>`;
+          })
+          .catch(err => {
+            console.error("Error fetching stats:", err);
+            document.getElementById("projectStats").textContent =
+              "Error loading project stats.";
+            document.getElementById("projectsBody").innerHTML =
+              `<tr><td colspan="5" style="text-align:center;">Error loading projects.</td></tr>`;
+          });
+      }
+
 
         function loadProjectStatus() {
                 const user = firebase.auth().currentUser;
@@ -500,8 +610,17 @@
 
                             // Pricing & details
                             if (order.type === "website") {
-                                estimate = (order.pages || 0) * 500;
-                                details = `Pages: ${order.pages || 0}, Langs: ${(order.languages || []).join(", ")}, Topic: ${order.topic || "-"}`;
+                                let langs = order.languages || [];
+
+                              if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS") && langs.includes("Node.js") && langs.includes("Bootstrap")) {
+                                estimate = (parseInt(order.pages) || 0) * 850;
+                              } else if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS") && (langs.includes("Node.js") || langs.includes("Firebase"))) {
+                                estimate = (parseInt(order.pages) || 0) * 750;
+                              } else if (langs.includes("HTML") && langs.includes("CSS") && langs.includes("JS")) {
+                                estimate = (parseInt(order.pages) || 0) * 650;
+                              } else if (langs.includes("HTML") && langs.includes("CSS")) {
+                                estimate = (parseInt(order.pages) || 0) * 500;
+                              }
                             }
                             if (order.type === "software") {
                                 estimate = 750;
@@ -527,11 +646,10 @@
                                 case "almost_done":
                                     statusIcon = "⚡ Almost Done";
                                     break;
+
                                 case "completed":
                                     statusIcon = "✅ Completed";
                                     break;
-                                default:
-                                    statusIcon = "❔ Unknown";
                             }
 
                             rows += `
@@ -554,6 +672,16 @@
                             `<tr><td colspan="6" style="text-align:center;">Error loading status.</td></tr>`;
                     });
             }
+
+            function logout() {
+                firebase.auth().signOut().then(() => {
+                  window.location.href = "login.html"; // Redirect after logout
+                }).catch((error) => {
+                  console.error("Logout Error:", error);
+                  alert("Error logging out. Try again!");
+                });
+              }
+
 
 
 

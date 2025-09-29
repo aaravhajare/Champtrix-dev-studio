@@ -216,6 +216,14 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Auto redirect if already signed in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = "dashboard.html";
+                }
+        });
+
+
         function toggleForms() {
             document.getElementById("loginForm").classList.toggle("hidden");
             document.getElementById("signupForm").classList.toggle("hidden");

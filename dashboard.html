@@ -370,8 +370,46 @@
 
             else if (section === "contact") {
                 container.innerHTML = `
-      <h2 style="color:#00ffff; text-align:center; margin-top:70px;">Get In Touch</h2>
-      <p>Email: contact@champtrix.dev</p>`;
+      <div class="contact-section" style="margin-top:70px; padding:30px; background: rgba(0,0,0,0.6); border-radius:15px;">
+  <h2 style="color:#00ffff; text-align:center; margin-bottom:20px; text-shadow:0 0 15px rgba(0,255,255,0.8);">
+    Get In Touch
+  </h2>
+
+  <!-- Contact Info -->
+  <div class="contact-info" style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center;">
+    <div style="flex:1; min-width:250px; color:#ccc;">
+      <h4 style="color:#00ffff;">Contact Details</h4>
+      <p>Email: <a href="mailto:contact@champtrix.dev" style="color:#00ffff;">contact@champtrix.dev</a></p>
+      <p>Phone: <a href="tel:+911234567890" style="color:#00ffff;">+91 12345 67890</a></p>
+      <p>Address: 123, Champtrix Street, City, Country</p>
+      <p>Hours: Mon–Sat, 10:00 AM – 7:00 PM</p>
+    </div>
+
+    <!-- Contact Form -->
+    <div style="flex:1; min-width:300px;">
+      <form id="contactForm" style="display:flex; flex-direction:column; gap:10px;">
+        <input type="text" id="contactName" class="form-control" placeholder="Your Name" required>
+        <input type="email" id="contactEmail" class="form-control" placeholder="Your Email" required>
+        <textarea id="contactMessage" class="form-control" placeholder="Your Message" rows="4" required></textarea>
+        <button type="button" class="btn btn-info" onclick="submitContact()">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Social Links -->
+  <div style="text-align:center; margin-top:30px;">
+    <h4 style="color:#00ffff;">Connect With Us</h4>
+    <a href="https://www.instagram.com/champtrix_dev_studio/?hl=en" target="_blank" style="color:#00ffff; margin:0 10px;">Instagram</a> |
+    <a href="https://linkedin.com" target="_blank" style="color:#00ffff; margin:0 10px;">LinkedIn</a> |
+    <a href="https://github.com/Champtrix-DEV-STUDIO" target="_blank" style="color:#00ffff; margin:0 10px;">GitHub</a>
+  </div>
+
+  <!-- Google Map -->
+  <div style="margin-top:30px;">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30255.08810495693!2d73.91873427431639!3d18.579177000000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c3a87eb23669%3A0x150fd8e0ba1cc8db!2sProactive%20Abacus%20and%20Vedic%20Maths!5e0!3m2!1sen!2sin!4v1759234749412!5m2!1sen!2sin" width="1050" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</div>
+`;
             }
 
             else if (section === "home") {
@@ -482,20 +520,11 @@
 
           // Save project order with user details included
           db.collection("orders").add(data).then(() => {
+            sendToSheets("orders", orderData);
             console.log("Order saved with user details:", data);
             alert("Request submitted successfully!");
             loadSection("home");
           }).catch(err => console.error("Error storing order:", err));
-
-          // Still push to Google Sheets if needed
-          fetch("https://script.google.com/macros/s/AKfycbyroVGFcd2DtvMgpXXD-4E8CcpzJ87WLfcn06juFYbwFEybe_KwiX0BBR-HQ7-mE_kofQ/exec", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-          })
-            .then(res => res.text())
-            .then(msg => console.log("Sheets Response:", msg))
-            .catch(err => console.error(err));
 
         }).catch(err => {
           console.error("Error fetching user info:", err);
@@ -681,6 +710,44 @@
                   alert("Error logging out. Try again!");
                 });
               }
+
+              function submitContact() {
+                  let name = document.getElementById("contactName").value.trim();
+                  let email = document.getElementById("contactEmail").value.trim();
+                  let message = document.getElementById("contactMessage").value.trim();
+
+                  if (!name || !email || !message) {
+                    alert("Please fill all fields.");
+                    return;
+                  }
+
+                  db.collection("contacts").add({
+                    name,
+                    email,
+                    message,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+
+                  
+                  }).then(() => {
+                    sendToSheets("Contacts", contact);
+                    alert("Message sent successfully!");
+                    document.getElementById("contactForm").reset();
+                  }).catch(err => {
+                    console.error("Error sending message:", err);
+                    alert("Error sending message, try again later.");
+                  });
+                }
+
+                function sendToSheets(collection, payload) {
+                    fetch("https://script.google.com/macros/s/AKfycbzu8hihK_eKmQVlgKW6jC7HoFMBe6yy_YUGUMpopRo75VSKY-6Fgz7nFhj-0WaPVQsT/exec", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ collection, payload })
+                    })
+                      .then(res => res.text())
+                      .then(msg => console.log("Sheets Response:", msg))
+                      .catch(err => console.error("Error sending to sheets:", err));
+                  }
 
 
 

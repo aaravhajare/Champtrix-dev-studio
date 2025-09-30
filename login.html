@@ -273,6 +273,7 @@
                         });
                 })
                 .then(() => {
+                    sendToSheets("users", user);
                     alert("Sign-Up successful! You can now login.");
                     window.location.href = "dashboard.html";
                 })

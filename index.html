@@ -403,9 +403,7 @@ nav .nav-logo {
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     window.location.href = "dashboard.html"; // ✅ logged in
-                } else {
-                    window.location.href = "login.html"; // ✅ not logged in
-                }
+                } 
             });
         }, 2000); // 5 sec wait
 

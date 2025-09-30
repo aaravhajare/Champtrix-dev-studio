@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Champtrix Dev Studios</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         /* ===== GLOBAL ===== */
         * {
@@ -18,53 +22,76 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #00ffff;
-            overflow-x: hidden;
-            position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #00ffff;
+    overflow-x: hidden;
+    background: linear-gradient(to right, black 50%, transparent 50%),
+        url("logo.png") no-repeat center/cover;
+    /* REMOVE: position: relative; */
+}
 
-            background: linear-gradient(to right, black 50%, transparent 50%),
-                url("logo.png") no-repeat center/cover;
-        }
 
         a {
             text-decoration: none;
             color: inherit;
         }
 
-        /* ===== NAVBAR ===== */
         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+    position: relative; /* normal flow */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 50px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    color: #00e6e6;
+}
+
+
+
+
+        nav .nav-left {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 50px;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
+            gap: 12px;
+        }
+
+        nav .nav-left img {
+            width: 50px;
+            height: 50px;
         }
 
         nav .nav-logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #00ffff;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            font-size: 1.8rem; font-weight: bold; color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 25px;
+            margin-bottom: 0;
+            color:aqua
         }
 
         nav ul li a {
             font-weight: 500;
-            transition: 0.3s;
+            cursor: pointer;
+            color: aqua;
+        }
+
+        .anav-link{
+            font-weight: 500;
+            cursor: pointer;
+            color: aqua;
         }
 
         nav ul li a:hover {
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 1);
+        }
+
+        .anav-link :hover{
             color: white;
             text-shadow: 0 0 10px rgba(0, 255, 255, 1);
         }
@@ -102,27 +129,19 @@
         }
 
         .btn {
-            background: #00ffff;
-            color: black;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-            transition: 0.3s;
+            background: #00ffff; color: black; font-weight: bold; padding: 15px 40px; border: none; border-radius: 15px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); transition: 0.3s;
         }
 
         .btn:hover {
-            background: #00e6e6;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+            background: #00e6e6; box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+            color: white;
         }
 
         /* ===== SECTIONS ===== */
         section {
             padding: 80px 50px;
             min-height: 100vh;
+            
         }
 
         section h2 {
@@ -141,83 +160,56 @@
             color: #ccc;
         }
 
-        /* ===== ABOUT ===== */
         .about {
             background: rgba(0, 0, 0, 0.7);
         }
 
-        /* ===== SERVICES ===== */
-        .services {
-            background: rgba(0, 0, 0, 0.6);
+        .services { background: rgba(0, 0, 0, 0.6); } 
+        .service-cards { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 40px; }
+         .card { background: rgba(5, 233, 245, 0.1); border-radius: 15px; padding: 30px; width: 300px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; } 
+         .card:hover { transform: translateY(-10px); box-shadow: 0 0 30px rgba(0, 255, 255, 0.7); } 
+         .card h3 { margin-bottom: 15px; color: aqua;}
+
+        .portfolio {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 80px 50px;
         }
 
-        .service-cards {
+        .portfolio h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+        }
+
+        .portfolio-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
             justify-content: center;
-            margin-top: 40px;
         }
 
-        .card {
-            background: rgba(0, 255, 255, 0.1);
+        .video-container {
+            flex: 1 1 600px;
+            max-width: 800px;
+            position: relative;
+        }
+
+        video {
+            width: 80%;
+            max-width: 800px;
             border-radius: 15px;
-            padding: 30px;
-            width: 300px;
-            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: 20px auto;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+        video:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
         }
 
-        .card h3 {
-            margin-bottom: 15px;
-        }
-
-        /* ===== PORTFOLIO ===== */
-        .portfolio {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 80px 50px;
-}
-
-.portfolio h2 {
-    text-align: center;
-    font-size: 2.8rem;
-    margin-bottom: 40px;
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
-}
-
-.portfolio-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
-}
-
-.video-container {
-    flex: 1 1 600px; /* Makes videos larger and responsive */
-    max-width: 800px;
-    position: relative;
-}
-
-.video-container video {
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.video-container video:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
-}
-
-
-        /* ===== CONTACT ===== */
         .contact {
             background: rgba(0, 0, 0, 0.6);
             text-align: center;
@@ -254,74 +246,44 @@
             background: #00e6e6;
         }
 
-        /* ===== FOOTER ===== */
         footer {
             padding: 20px;
             text-align: center;
             background: rgba(0, 0, 0, 0.8);
             color: #ccc;
         }
-
-        /* Style the video nicely */
-video {
-  width: 80%;              /* responsive size */
-  max-width: 800px;
-  border-radius: 15px;      /* rounded corners */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* soft shadow */
-  display: block;
-  margin: 20px auto;       /* center on page */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover effect */
-video:hover {
-  transform: scale(1.03);   /* subtle zoom */
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
-}
-
-/* Optional: add a mockup-like frame */
-video::before {
-  content: "";
-  position: absolute;
-  border: 10px solid #000;
-  border-radius: 20px;
-}
-
-nav .nav-left {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* spacing between logo and text */
-}
-
-nav .nav-left img {
-  width: 50px;
-  height: 50px;
-}
-
-nav .nav-logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #00ffff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-}
-
     </style>
 </head>
 
 <body>
     <!-- NAVBAR -->
-    <nav>
-        <div class="nav-left">
-            <img src="nav-logo.png" alt="Champtrix Logo">
-            <span class="nav-logo">Champtrix</span>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <div class="nav-left">
+                    <img src="nav-logo.png" alt="Champtrix Logo">
+                    <span class="nav-logo">Champtrix Dev Studio</span>
+                </div>
+            </a>
+    
+            <!-- Hamburger button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavLanding"
+                aria-controls="navbarNavLanding" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+    
+            <!-- Nav links -->
+            <div class="collapse navbar-collapse" id="navbarNavLanding">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="anav-link" href="#hero">Home</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#portfolio">Portfolio</a></li>
+                </ul>
+            </div>
         </div>
-        <ul>
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-        </ul>
     </nav>
+
 
     <!-- HERO -->
     <section id="hero" class="hero">
@@ -334,10 +296,7 @@ nav .nav-logo {
     <section id="about" class="about">
         <h2>About Us</h2>
         <p>Champtrix Dev Studios is dedicated to delivering modern, high-quality websites and applications tailored to
-            your
-            business needs. Our expert team works tirelessly to create intuitive, visually stunning solutions that make
-            a
-            lasting impression.</p>
+            your business needs.</p>
     </section>
 
     <!-- SERVICES -->
@@ -349,12 +308,16 @@ nav .nav-logo {
                 <p>Responsive, scalable, and modern websites to give your business a powerful online presence.</p>
             </div>
             <div class="card">
-                <h3>App Development</h3>
-                <p>Custom mobile apps designed to delight your users and enhance engagement.</p>
+                <h3>Software Development</h3>
+                <p>Custom software designed to delight your users and enhance engagement.</p>
             </div>
             <div class="card">
-                <h3>UI/UX Design</h3>
+                <h3>Frontend</h3>
                 <p>Beautiful and functional interfaces that keep users coming back for more.</p>
+            </div>
+            <div class="card">
+                <h3>Backend</h3>
+                <p>Full-featured multifunctional code that solves every problem and provides the output you need</p>
             </div>
         </div>
     </section>
@@ -380,43 +343,12 @@ nav .nav-logo {
         &copy; 2025 Champtrix Dev Studios. All rights reserved.
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        // ✅ Your Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBuki7ud7sUL6yg8g76Y-mITORhZMM0M2s",
-            authDomain: "champtrixdevstudio.firebaseapp.com",
-            projectId: "champtrixdevstudio",
-            storageBucket: "champtrixdevstudio.firebasestorage.app",
-            messagingSenderId: "518695122341",
-            appId: "1:518695122341:web:9d2ba4527f0a56116b644c",
-            measurementId: "G-ZERHWE289L"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // Auto redirect after 5s
-        setTimeout(() => {
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    window.location.href = "dashboard.html"; // ✅ logged in
-                } 
-            });
-        }, 2000); // 5 sec wait
-
-        // If user clicks the button manually
         function login() {
             window.location.href = "login.html";
-        }
-    </script>
-
-    <script>
-        
-        function login() {
-            window.location.href = "login.html"
         }
     </script>
 </body>

@@ -41,6 +41,8 @@
       margin-bottom: 200px;
       background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
       backdrop-filter: blur(5px); /* Optional: nice blur effect behind navbar */
+      border: 0.5px solid black; 
+      margin-bottom: 70px;
     }
 
     
@@ -191,12 +193,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li><a onclick="loadSection('home')">Dashboard</a></li>
-          <li><a onclick="loadSection('project')">Request a Project</a></li>
-          <li><a onclick="loadSection('packages')">Our Packages</a></li>
-          <li><a onclick="loadSection('status')">Project Status</a></li>
-          <li><a onclick="loadSection('contact')">Get In Touch</a></li>
-          <li><a onclick="logout()">Logout</a></li>
+          <li><a onclick="loadSection('home'); closeNavbar()">Dashboard</a></li>
+          <li><a onclick="loadSection('project'); closeNavbar()">Request a Project</a></li>
+          <li><a onclick="loadSection('packages'); closeNavbar()">Our Packages</a></li>
+          <li><a onclick="loadSection('status'); closeNavbar()">Project Status</a></li>
+          <li><a onclick="loadSection('contact'); closeNavbar()">Get In Touch</a></li>
+          <li><a onclick="logout(); closeNavbar()">Logout</a></li>
+
         </ul>
       </div>
     </div>
@@ -206,6 +209,14 @@
 
   <!-- MAIN CONTENT -->
   <div class="container" id="mainContent"></div>
+
+  <script>
+    function closeNavbar() {
+      let navbarCollapse = document.getElementById("navbarNav");
+      let bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+      bsCollapse.hide();
+    }
+  </script>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -233,7 +244,7 @@
 
             if (section === "packages") {
                 container.innerHTML = `
-        <section class="pricing-section" style = "margin-top : 70px ;">
+        <section class="pricing-section" style = "margin-top : 100px ;">
 
         <h1 class="price-tag">Websites</h1>
         <section class="website-section">
@@ -294,7 +305,7 @@
 
             else if (section === "project") {
                 container.innerHTML = `
-      <div class="request-project p-4" style="margin-top:70px;"> 
+      <div class="request-project p-4" style="margin-top:100px;"> 
         <h2 style="color:#00ffff; text-align:center;">Request a Project</h2>
         <form id="projectForm">
           <label>Project Type</label>
@@ -349,7 +360,7 @@
 
             else if (section === "status") {
                 container.innerHTML = `
-      <h2 style="color:#00ffff; text-align:center; margin-top:70px;">Project Status</h2>
+      <h2 style="color:#00ffff; text-align:center; margin-top:100px;">Project Status</h2>
       <div class="table-responsive mt-4">
         <table class="table table-dark table-bordered table-striped" id="statusTable">
           <thead>
@@ -370,7 +381,7 @@
 
             else if (section === "contact") {
                 container.innerHTML = `
-      <div class="contact-section" style="margin-top:70px; padding:30px; background: rgba(0,0,0,0.6); border-radius:15px;">
+      <div class="contact-section" style="margin-top:100px; padding:30px; background: rgba(0,0,0,0.6); border-radius:15px;">
   <h2 style="color:#00ffff; text-align:center; margin-bottom:20px; text-shadow:0 0 15px rgba(0,255,255,0.8);">
     Get In Touch
   </h2>
@@ -414,7 +425,7 @@
 
             else if (section === "home") {
                 container.innerHTML = `
-      <div class="dashboard" style="padding:20px; margin-top:auto; margin-top : 70px ; ">
+      <div class="dashboard" style="padding:20px; margin-top:auto; margin-top : 100px ; ">
 
   <!-- Title -->
   <h1 style="color:#00ffff; text-align:center; margin-bottom:30px; font-size:2.5rem; text-shadow:0 0 15px rgba(0,255,255,0.8);">

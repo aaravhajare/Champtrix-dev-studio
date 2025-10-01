@@ -28,6 +28,7 @@
     background: linear-gradient(to right, black 50%, transparent 50%),
         url("logo.png") no-repeat center/cover;
     /* REMOVE: position: relative; */
+   
 }
 
 
@@ -37,7 +38,7 @@
         }
 
         nav {
-    position: relative; /* normal flow */
+    position: fixed;
     width: 100%;
     display: flex;
     align-items: center;
@@ -255,14 +256,23 @@
     </style>
 </head>
 
-<body>
+<body class="container-fluid">
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" style="position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 50px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    color: #00e6e6;
+    z-index: 99999;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <div class="nav-left">
                     <img src="nav-logo.png" alt="Champtrix Logo">
-                    <span class="nav-logo">Champtrix Dev Studio</span>
+                    <span class="nav-logo">Champtrix</span>
                 </div>
             </a>
     
@@ -275,19 +285,28 @@
             <!-- Nav links -->
             <div class="collapse navbar-collapse" id="navbarNavLanding">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="anav-link" href="#hero">Home</a></li>
-                    <li class="nav-item"><a class="anav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="anav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="anav-link" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#hero" onclick="closeNavbar()">Home</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#about" onclick="closeNavbar()">About</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#services" onclick="closeNavbar()">Services</a></li>
+                    <li class="nav-item"><a class="anav-link" href="#portfolio" onclick="closeNavbar()">Portfolio</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
+    <script>
+        function closeNavbar() {
+            let navbarCollapse = document.getElementById("navbarNavLanding");
+            let bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+            bsCollapse.hide();
+        }
+    </script>
+
 
     <!-- HERO -->
     <section id="hero" class="hero">
         <h1>CHAMPTRIX</h1>
+        <p style="margin-top: 0px;">Our Code’s Battle, Your Vision’s Conquest.</p>
         <p>Innovative Web & App Development Studio</p>
         <button class="btn" onclick="login()">✨ Get My Website</button>
     </section>
@@ -295,8 +314,21 @@
     <!-- ABOUT -->
     <section id="about" class="about">
         <h2>About Us</h2>
-        <p>Champtrix Dev Studios is dedicated to delivering modern, high-quality websites and applications tailored to
-            your business needs.</p>
+        <p>At Champtrix Studio, we take pride in delivering the highest quality projects with dedication, precision, and
+        innovation. Our mission is simple — to bring your vision to life with excellence. Every member of our team works
+        tirelessly to ensure your project is completed to perfection, with attention to every detail.
+        
+        We believe in working for our customers, not just for our business. Your success is our success. That is why we place
+        customer satisfaction at the heart of everything we do. Our goal is not only to meet expectations but to exceed them,
+        ensuring that every client feels valued and supported.
+        
+        These values form the foundation of our reputation as one of the most trusted full-stack website and software
+        development startups. From backend systems to stunning frontend designs, we combine creativity and technical expertise
+        to deliver exceptional results tailored to your needs.
+        
+        Whether you need your first website, custom software, or any tech solution, Champtrix Studio is ready to make it happen.
+        Join us today, and let’s build something extraordinary together. Your journey to success starts here — and we’re here,
+        waiting for your order.</p>
     </section>
 
     <!-- SERVICES -->

@@ -531,12 +531,16 @@
           }
 
           // Save project order with user details included
-          db.collection("orders").add(data).then(() => {
-            sendToSheets("orders", orderData);
-            console.log("Order saved with user details:", data);
-            alert("Request submitted successfully!");
-            loadSection("home");
-          }).catch(err => console.error("Error storing order:", err));
+          db.collection("orders").add(data)
+            .then(() => {
+              console.log("Order saved with user details:", data);
+              window.alert("Request submitted successfully!");
+              loadSection("home");
+            })
+            .catch(err => {
+              console.error("Error storing order:", err);
+            });
+
 
         }).catch(err => {
           console.error("Error fetching user info:", err);
@@ -741,7 +745,6 @@
 
                   
                   }).then(() => {
-                    sendToSheets("Contacts", contact);
                     alert("Message sent successfully!");
                     document.getElementById("contactForm").reset();
                   }).catch(err => {
@@ -750,16 +753,7 @@
                   });
                 }
 
-                function sendToSheets(collection, payload) {
-                    fetch("https://script.google.com/macros/s/AKfycbzu8hihK_eKmQVlgKW6jC7HoFMBe6yy_YUGUMpopRo75VSKY-6Fgz7nFhj-0WaPVQsT/exec", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ collection, payload })
-                    })
-                      .then(res => res.text())
-                      .then(msg => console.log("Sheets Response:", msg))
-                      .catch(err => console.error("Error sending to sheets:", err));
-                  }
+                
 
 
 
